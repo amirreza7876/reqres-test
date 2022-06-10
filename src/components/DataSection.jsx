@@ -36,7 +36,10 @@ function DataSection() {
                     </TableHead>
                     <TableBody>
                         {filteredItem ? (
-                            <TableRow key={filteredItem.name}>
+                            <TableRow
+                                key={filteredItem.name}
+                                style={{ backgroundColor: filteredItem.color }}
+                            >
                                 <TableCell component="th" scope="row">
                                     {filteredItem.name}
                                 </TableCell>
