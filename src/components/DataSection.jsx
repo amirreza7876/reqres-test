@@ -1,4 +1,5 @@
 import {
+    Grid,
     Paper,
     Table,
     TableBody,
@@ -26,7 +27,6 @@ function DataSection() {
             filteredItem = data.data.data;
         }
     }
-    console.log(errorMessage);
     if (!data && !rows) {
         return <p>loading...</p>;
     } else {
@@ -48,7 +48,9 @@ function DataSection() {
                             // show filtered Item
                             <TableRow
                                 key={filteredItem.name}
-                                style={{ backgroundColor: filteredItem.color }}
+                                style={{
+                                    backgroundColor: filteredItem.color,
+                                }}
                             >
                                 <TableCell component="th" scope="row">
                                     {filteredItem.name}

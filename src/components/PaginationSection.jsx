@@ -6,8 +6,8 @@ function PaginationSection() {
     let showPagination = true;
     const { data, getData, errorMessage } = useContext(DataContext);
 
-    const handleChangePage = (pageNumber) => {
-        getData({ pageNumber });
+    const handleChangePage = (page) => {
+        getData({ page });
     };
     if (!data.data.data.length) {
         showPagination = false;
@@ -20,9 +20,7 @@ function PaginationSection() {
                     <Pagination
                         count={data.data.total_pages}
                         color="primary"
-                        onChange={(e) => {
-                            handleChangePage(e.target.textContent);
-                        }}
+                        onChange={(event, page) => handleChangePage(page)}
                     />
                 </Grid>
             )

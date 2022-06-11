@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useMutation } from "react-query";
-import { allData, fetchData } from "./services/fetchData";
+import { fetchData } from "./services/fetchData";
 export const DataContext = createContext();
 
 const DataContextProvider = ({ children, page }) => {
@@ -8,11 +8,11 @@ const DataContextProvider = ({ children, page }) => {
     const [id, setId] = useState();
     const [filteredItem, setFilteredItem] = useState();
     const [errorMessage, setErrorMessage] = useState("");
-    const { mutateAsync: getData } = useMutation((page) => fetchData(page), {
+    const { mutateAsync: getData } = useMutation((data) => fetchData(data), {
         onSuccess: (result) => {
             if (result.status === 200) {
                 setData(result);
-                setErrorMessage()
+                setErrorMessage();
             }
         },
         onError: (error) => {
@@ -28,9 +28,7 @@ const DataContextProvider = ({ children, page }) => {
         if (id) {
             getData({ id });
         } else if (id === "") {
-            console.log("empty");
             getData();
-
             setFilteredItem();
         }
     }, [id]);
