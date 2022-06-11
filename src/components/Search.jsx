@@ -4,12 +4,12 @@ import { DataContext } from "../DataContext";
 
 function Search() {
     const [id, setId] = useState();
-    const {setId:filterById} = useContext(DataContext)
+    const { setId: filterById } = useContext(DataContext);
 
     const handleChange = (e) => {
         const onlyNums = e.target.value.replace(/[^0-9]/g, "");
         setId(onlyNums);
-        filterById(onlyNums)
+        filterById(onlyNums);
     };
 
     return (

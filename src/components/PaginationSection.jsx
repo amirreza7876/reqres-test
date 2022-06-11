@@ -3,23 +3,29 @@ import React, { useContext } from "react";
 import { DataContext } from "../DataContext";
 
 function PaginationSection() {
-    const { data, getData } = useContext(DataContext);
+    let showPagination = true;
+    const { data, getData, errorMessage } = useContext(DataContext);
 
     const handleChangePage = (pageNumber) => {
         getData({ pageNumber });
     };
-
+    if (!data.data.data.length) {
+        showPagination = false;
+    }
     if (data) {
         return (
-            <Grid mt={3}>
-                <Pagination
-                    count={data.data.total_pages}
-                    color="primary"
-                    onChange={(e) => {
-                        handleChangePage(e.target.textContent);
-                    }}
-                />
-            </Grid>
+            !errorMessage &&
+            showPagination && (
+                <Grid mt={3}>
+                    <Pagination
+                        count={data.data.total_pages}
+                        color="primary"
+                        onChange={(e) => {
+                            handleChangePage(e.target.textContent);
+                        }}
+                    />
+                </Grid>
+            )
         );
     }
 }

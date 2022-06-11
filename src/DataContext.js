@@ -5,38 +5,32 @@ export const DataContext = createContext();
 
 const DataContextProvider = ({ children, page }) => {
     const [data, setData] = useState();
-    const [allDataState, setAllDataState] = useState();
     const [id, setId] = useState();
     const [filteredItem, setFilteredItem] = useState();
-
+    const [errorMessage, setErrorMessage] = useState("");
     const { mutateAsync: getData } = useMutation((page) => fetchData(page), {
         onSuccess: (result) => {
             if (result.status === 200) {
                 setData(result);
+                setErrorMessage()
             }
         },
-    });
-
-    const { mutateAsync: allDataService } = useMutation(() => allData(), {
-        onSuccess: (result) => {
-            if (result.status === 200) {
-                console.log(result);
-                setAllDataState(result);
-            }
+        onError: (error) => {
+            setErrorMessage("Product with this id does not exist.");
         },
     });
 
     useEffect(() => {
         getData();
-        allDataService();
     }, []);
 
     useEffect(() => {
         if (id) {
-            setFilteredItem(
-                allDataState.data.data.find((item) => item.id == id)
-            );
+            getData({ id });
         } else if (id === "") {
+            console.log("empty");
+            getData();
+
             setFilteredItem();
         }
     }, [id]);
@@ -44,7 +38,14 @@ const DataContextProvider = ({ children, page }) => {
     if (data) {
         return (
             <DataContext.Provider
-                value={{ data, getData, setId, filteredItem }}
+                value={{
+                    data,
+                    getData,
+                    setId,
+                    filteredItem,
+                    setFilteredItem,
+                    errorMessage,
+                }}
             >
                 {children}
             </DataContext.Provider>

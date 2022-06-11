@@ -15,16 +15,24 @@ function createData(id, name, year, color) {
 
 function DataSection() {
     let rows;
-    const { data, filteredItem } = useContext(DataContext);
+    let filteredItem;
+    const { data, errorMessage } = useContext(DataContext);
     if (data) {
-        rows = data.data.data.map((item) =>
-            createData(item.id, item.name, item.year, item.color)
-        );
+        if (data.data.data.length) {
+            rows = data.data.data.map((item) =>
+                createData(item.id, item.name, item.year, item.color)
+            );
+        } else {
+            filteredItem = data.data.data;
+        }
     }
+    console.log(errorMessage);
     if (!data && !rows) {
         return <p>loading...</p>;
     } else {
-        return (
+        return errorMessage ? (
+            <p>Nothing found on recorded Data</p>
+        ) : (
             <TableContainer component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead>
@@ -34,8 +42,10 @@ function DataSection() {
                             <TableCell>Year</TableCell>
                         </TableRow>
                     </TableHead>
+
                     <TableBody>
                         {filteredItem ? (
+                            // show filtered Item
                             <TableRow
                                 key={filteredItem.name}
                                 style={{ backgroundColor: filteredItem.color }}
@@ -47,12 +57,12 @@ function DataSection() {
                                 <TableCell>{filteredItem.year}</TableCell>
                             </TableRow>
                         ) : (
+                            // map over all data
                             rows.map((row) => (
                                 <TableRow
                                     key={row.name}
                                     style={{ backgroundColor: row.color }}
                                 >
-                                    {console.log(row)}
                                     <TableCell component="th" scope="row">
                                         {row.name}
                                     </TableCell>
