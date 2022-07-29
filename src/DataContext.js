@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { fetchData } from "./services/fetchData";
+
 export const DataContext = createContext();
 
 const DataContextProvider = ({ children, page }) => {
